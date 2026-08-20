@@ -1,0 +1,6 @@
+task_id,subject,duration,priority,due_date,completed,created_at
+1,Python Functions,90,High,2026-08-20,False,2026-08-19 11:53:12
+2,Data Structures & Algorithms,60,Medium,2026-08-19,True,2026-08-19 11:53:12
+3,Linear Algebra Basics,45,Low,2026-08-25,False,2026-08-19 11:53:12
+4,Essay Draft: History,75,High,2026-08-15,False,2026-08-19 11:53:12
+5,Chemistry Revision,50,Medium,2026-08-22,False,2026-08-19 11:53:12

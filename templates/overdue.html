@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Overdue Report - Study Planner{% endblock %}
+{% block content %}
+
+<div class="card">
+  <h2 style="margin-top:0;">Overdue Report</h2>
+  {% if tasks %}
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Subject</th>
+        <th>Duration</th>
+        <th>Priority</th>
+        <th>Due Date</th>
+        <th>Days Overdue</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for t in tasks %}
+      <tr class="overdue">
+        <td>{{ t.task_id }}</td>
+        <td>{{ t.subject }}</td>
+        <td>{{ t.duration }} min</td>
+        <td><span class="badge badge-{{ t.priority.lower() }}">{{ t.priority }}</span></td>
+        <td>{{ t.due_date }}</td>
+        <td>{{ t.days_until_due() * -1 }} day(s)</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="empty-state">Nothing overdue. Great job staying on track! 🎉</div>
+  {% endif %}
+</div>
+
+{% endblock %}

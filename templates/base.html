@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}Study Planner{% endblock %}</title>
+<style>
+  :root {
+    --bg: #f5f6fa;
+    --card: #ffffff;
+    --text: #1f2430;
+    --muted: #6b7280;
+    --border: #e5e7eb;
+    --high: #e0574c;
+    --medium: #dba525;
+    --low: #3f8f5f;
+    --accent: #4f6df5;
+    --accent-dark: #3b52c4;
+    --done-bg: #eef8f1;
+    --overdue-bg: #fdecea;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+  }
+  header {
+    background: var(--text);
+    color: white;
+    padding: 18px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  header h1 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+  }
+  nav a {
+    color: #cfd3e0;
+    text-decoration: none;
+    margin-left: 18px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  nav a:hover { color: white; }
+  main {
+    max-width: 980px;
+    margin: 28px auto;
+    padding: 0 20px;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 12px;
+  }
+  .summary-stat {
+    text-align: center;
+    padding: 12px 8px;
+    border-radius: 8px;
+    background: var(--bg);
+  }
+  .summary-stat .num {
+    font-size: 22px;
+    font-weight: 700;
+  }
+  .summary-stat .label {
+    font-size: 12px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  .toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  .toolbar form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+  input[type=text], input[type=number], input[type=date], select {
+    padding: 8px 10px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 14px;
+    background: white;
+    color: var(--text);
+  }
+  .btn {
+    display: inline-block;
+    padding: 8px 14px;
+    border-radius: 6px;
+    border: none;
+    background: var(--accent);
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .btn:hover { background: var(--accent-dark); }
+  .btn-secondary {
+    background: white;
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+  .btn-secondary:hover { background: var(--bg); }
+  .btn-danger {
+    background: var(--high);
+  }
+  .btn-danger:hover { background: #c3453c; }
+  .btn-small { padding: 5px 10px; font-size: 12px; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  th, td {
+    text-align: left;
+    padding: 10px 8px;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+  }
+  th { color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; }
+  tr.completed { background: var(--done-bg); }
+  tr.overdue { background: var(--overdue-bg); }
+  .badge {
+    display: inline-block;
+    padding: 2px 9px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    color: white;
+  }
+  .badge-high { background: var(--high); }
+  .badge-medium { background: var(--medium); }
+  .badge-low { background: var(--low); }
+  .status-pill {
+    display: inline-block;
+    padding: 2px 9px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .status-done { background: #d5f0dd; color: #1f7a3f; }
+  .status-pending { background: #eef0f4; color: #55596b; }
+  .status-overdue { background: #fbdad6; color: #b3251b; }
+  .actions a, .actions button {
+    margin-right: 6px;
+  }
+  .flash {
+    padding: 10px 14px;
+    border-radius: 6px;
+    margin-bottom: 14px;
+    font-size: 14px;
+  }
+  .flash-success { background: #e3f6e9; color: #1f7a3f; border: 1px solid #b9e3c6; }
+  .flash-error { background: #fbe4e2; color: #b3251b; border: 1px solid #f2b6b0; }
+  .empty-state {
+    text-align: center;
+    color: var(--muted);
+    padding: 30px 0;
+  }
+  .field { margin-bottom: 14px; display: flex; flex-direction: column; gap: 6px; }
+  .field label { font-size: 13px; font-weight: 600; color: var(--muted); }
+  form.stack { max-width: 420px; }
+  .form-actions { display: flex; gap: 10px; margin-top: 18px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>📘 Study Planner</h1>
+  <nav>
+    <a href="{{ url_for('index') }}">Dashboard</a>
+    <a href="{{ url_for('add_task') }}">Add Task</a>
+    <a href="{{ url_for('today_plan') }}">Today</a>
+    <a href="{{ url_for('week_plan') }}">This Week</a>
+    <a href="{{ url_for('overdue_report') }}">Overdue</a>
+    <a href="{{ url_for('export_csv') }}">Export CSV</a>
+  </nav>
+</header>
+<main>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="flash flash-{{ 'error' if category == 'error' else 'success' }}">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+  {% block content %}{% endblock %}
+</main>
+</body>
+</html>
